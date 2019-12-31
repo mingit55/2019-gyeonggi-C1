@@ -1,0 +1,70 @@
+@charset "UTF-8";
+
+#gallery .contents {
+    white-space: pre-line;
+}
+
+#gallery .contents .item {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    background: #fff;
+    padding: 20px;
+}
+
+#gallery .contents .item:hover {
+    box-shadow: 0 0 8px 5px #00000010;
+}
+
+#gallery .contents .item span {
+    font-size: 20px;
+}
+
+#gallery .contents .item p {
+    width: 100%;
+}
+
+#gallery .btn {
+    width: 180px;
+    height: 40px;
+    background: linear-gradient(135deg, #df4257a6, #4b7bd4b2);
+    border: 0;
+    color: #fff;
+    position: relative;
+    box-shadow: 0 0 10px 8px #00000010;
+    overflow: hidden;
+}
+
+#gallery .btn::before {
+    content: "Let's Go!";
+    position: absolute;
+    width: 0;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    white-space: nowrap;
+    background: linear-gradient(135deg, #df4257a6, #4b7bd4b2);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    left: 0;
+    top: 0;    
+    z-index: 1;
+    font-weight: bold;
+}
+
+#gallery .btn::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 100%;
+    background-color: rgb(248, 248, 248);
+    
+}
+
+#gallery .btn:hover::before, #gallery .btn:hover::after {
+    width: 100%;
+    transition: width 0.5s;
+}

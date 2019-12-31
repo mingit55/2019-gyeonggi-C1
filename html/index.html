@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>부산국제아트페어</title>
+
+    <!-- Common -->
+    <link rel="stylesheet" href="css/common.css">
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Unique -->
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/gallery-list.css">
+</head>
+<body>
+    <!-- 헤더 -->
+    <header>
+        <div class="inline d-flex justify-content-between align-items-center">
+            <a href="/">
+                <img class="logo" src="images/logo.png" alt="BUSAN INTERNATIONAL ART FAIR" height="70">
+            </a>
+            <ul class="main-nav d-flex">
+                <li class="mx-3">
+                    <a href="#">축제 참가</a>
+                    <ul class="sub-nav">
+                        <li>
+                            <a href="#">부스 예약</a>
+                        </li>
+                        <li>
+                            <a href="#">예약 현황</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="mx-3">
+                    <a href="gallery.html">갤러리</a>
+                </li>
+                <li class="mx-3">
+                    <a href="mypage.html">마이페이지</a>
+                    <ul class="sub-nav">
+                        <li><a href="mypage.html">내 정보</a></li>
+                        <li><a href="#">작업실</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="login-action main-nav d-flex">
+                <li>
+                    <a href="login.html">로그인</a>
+                </li>
+                <li>
+                    <a href="join.html">회원 가입</a>
+                </li>
+            </ul>
+        </div>
+    </header>
+    <!-- 슬라이드 영역 -->
+    <input type="radio" id="slide1" name="slider" hidden="hidden" checked>
+    <input type="radio" id="slide2" name="slider" hidden="hidden">
+    <input type="radio" id="slide3" name="slider" hidden="hidden">
+    <div id="slider" class="section">
+        <div class="text">
+            <h5>색채의 물결, 미술의 바다</h5>
+            <h1><span>BIAF</span> 2019</h1>
+        </div>
+        <div class="images">
+            <div class="item" data-idx="1"></div>
+            <div class="item" data-idx="2"></div>
+            <div class="item" data-idx="3"></div>
+        </div>
+        <div class="process">
+            <label for="slide1" data-idx="1" class="btn"></label>
+            <label for="slide2" data-idx="2" class="btn"></label>
+            <label for="slide3" data-idx="3" class="btn"></label>
+        </div>
+    </div>
+    <!-- 인기 갤러리 -->
+    <div id="gallery" class="section">
+
+        <div class="inline">
+            <div class="section-title">
+                <h5>인기 갤러리</h5>
+                <h1>Popular Gallery</h1>
+            </div>
+            <div class="contents mt-3">
+                <div class="item">
+                    <span class="name font-weight-bold mr-2">미카엘 화방</span>
+                    <span class="country text-muted">KR, Republic of Korea</span>
+                    <p class="description mt-3">미카엘 화방은 강원도 동해시의 젊은 화백들이 모여 만든 화방 규모의 갤러리입니다.
+                        모두가 경험이 짧은 젊은 화백들로 이루어져있지만 대한민국의 세련된 미와 투박한 정은 누구보다도 자신있습니다.</p>
+                    <a href="gallery_info.html" class="btn mt-2">자세히 보기</a>
+                </div>
+
+                <div class="item">
+                    <span class="name font-weight-bold mr-2">KIM ARTIST'S</span>
+                    <span class="country text-muted">KR, Republic of Korea</span>
+                    <p class="description mt-3">강원도 영월군 하동면 와석리에 위치한 우리 미술관은 아름다운 김삿갓계곡이 바로앞에 있는 위치에 있습니다.
+                        수십년간 대중들에게 소외되었던 예술이아닌, 누구나 예술을 느끼고 즐길 수 있도록 세상에 없던 새로움을 만들어 나가겠습니다.</p>
+                    <a href="gallery_info.html" class="btn mt-2">자세히 보기</a>
+                </div>
+
+                <div class="item">
+                    <span class="name font-weight-bold mr-2">기능 갤러리</span><span class="country text-muted">KR, Republic of Korea</span>
+                    <p class="description mt-3">우리 갤러리는 실로 엄청난 수준의 무형, 유형적 예술가치를 지니고 있습니다.
+                        우리 갤러리는 언제나 역량 있는 신진작가를 발굴하여 이들이 성장할 수 있는 토대를 만들어 주고 있습니다. 많은 관심 부탁드립니다.</p>
+                    <a href="gallery_info.html" class="btn mt-2">자세히보기</a>
+                </div>
+                <div class="item">
+                    <span class="name font-weight-bold mr-2">Michelangelo Artists</span><span class="country text-muted">IT, Italia</span>
+                    <p class="description mt-3">'Michelangelo Artists' We are Michelangelo's descendants. It's an honor to have a good opportunity.
+                        We are here on behalf of Italy to promote Italian art to the world.</p>
+                    <a href="gallery_info.html" class="btn mt-2">자세히보기</a>
+                </div>
+                <div class="item">
+                    <span class="name font-weight-bold mr-2">GALLERIA MILANO</span><span class="country text-muted">IT, Italia</span>
+                    <p class="description mt-3">[GALLERIA MILANO] We are the artists from Milan, Italy. We are a long-standing gallery in Italy and have been invited by the organizers. 
+                        Our Dozens of Italian-sensations will be presented at the Busan International Art Fair.</p>
+                    <a href="gallery_info.html" class="btn mt-2">자세히보기</a>
+                </div>
+                <div class="item">
+                    <span class="name font-weight-bold mr-2">백호미술협회</span><span class="country text-muted">KR, Republic of Korea</span>
+                    <p class="description mt-3">백호미술협회는 대내외적으로 경기도 미술을 대표하는 기관중 하나로서 경기도 북부지역 미술 행정 및 회원 단체를 총괄 하는 기구입니다. 
+                        미술을 대중 속으로 널리 보급시켜 국민의 문화여가 증진, 정신 함양에 기여하고 대한민국 미술발전에 기여함을 목적으로합니다.</p>
+                    <a href="gallery_info.html" class="btn mt-2">자세히보기</a>
+                </div>
+                <div class="item">
+                    <span class="name font-weight-bold mr-2">남송 미술관</span><span class="country text-muted">KR, Republic of Korea</span>
+                    <p class="description mt-3">경기도 가평읍 허수아비마을에 위치한 남송 미술관입니다. 경원대학교 응용미술과 남궁원 교수님이 전재산을 털어 2006년에 개관한 미술관입니다. 
+                        다양한 문화의 소재와 예술을 다루고 있으며 수집하고 관리해 왔던 국내외 미술품을 기반으로 미적 가치가 있는 예술품을 기획 상설 전시하고 미술 교육과 감사의 기회를 보다 폭 넓게 제공하기 위해 노력하고 있습니다.</p>
+                    <a href="gallery_info.html" class="btn mt-2">자세히보기</a>
+                </div>
+                <div class="item">
+                    <span class="name font-weight-bold mr-2">Johyun Gallery</span><span class="country text-muted">KR, Republic of Korea</span>
+                    <p class="description mt-3">부산 바닷가 근처 달맞이동산에 위치한 조현갤러리는 30년의 역사를 가지고 있습니다. 
+                        30년의 역사와 풍부한 경험을 가진 화백들과 이를 계승하고 새로운 미술 창작을 하고있는 젊은 화랑들의 작품들이 보는이들의 눈과 마음을 사로잡습니다.</p>
+                    <a href="gallery_info.html" class="btn mt-2">자세히보기</a>
+                </div>
+                <div class="item">
+                    <span class="name font-weight-bold mr-2">실로암 미술</span><span class="country text-muted">KR, Republic of Korea</span>
+                    <p class="description mt-3">실로암 미술은 본디 실로암 학원이란 이름으로 '세계에서 우뚝 설수 있는 21세기형 인재 양성'이라는 교육이념을 가지고 아름다운 정원도시인 뉴질랜드 크라이스트처치제 1994년 설립된 입시 및 보습 전문 학원이였습니다. 
+                        지금은 미술관 형식으로 더 많은 이들에게 양질의 미술을 선보이고자 실로암 미술을 온세계에 당당히 알리고 있습니다. 모든 이에게 좋은 추억이 되었으면 합니다.</p>
+                    <a href="gallery_info.html" class="btn mt-2">자세히보기</a>
+                </div>
+                <div class="item">
+                    <span class="name font-weight-bold mr-2">갤러리 죽전</span><span class="country text-muted">KR, Republic of Korea</span>
+                    <p class="description mt-3">경기도 용인시 수지구 죽전동의 한 외진 길목을 따라가다 보면 갤러리 죽전이 나옵니다. 우리 갤러리 죽전은 2015년에 개관된 비교적으로 신설된 갤러리입니다. 그에 맞게 갤러리 죽전에서는 젊은 사람들의 이목을 끌 수 있는 트렌드하고 독특한 작품들을 이번 아트페어에서 풀어볼것입니다. 젊은 피가 흐르는 젊은 미술, 젊은 감정을 관람객들이 함께 즐겼으면 합니다.</p>
+                    <a href="gallery_info.html" class="btn mt-2">자세히보기</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        window.onload = () => {
+            let sno = 0;
+            let slide = () => {
+                Array.from(document.querySelectorAll("#slider .process .btn"))[sno].click();
+                setTimeout(() => {
+                    sno = sno + 1 >= 3 ? 0 : sno + 1;
+                    slide();
+                }, 5000);
+            };
+            slide(0);
+
+            document.querySelectorAll("#slider .process .btn").forEach((x, i) => {
+                x.addEventListener("click", () => sno = i);
+            });
+            
+        };
+    </script>
+
+    <!-- 푸터 -->
+    <footer>
+
+        <div class="inline">
+            <div class="f-section col-md-6">
+                <div class="title">Contact Us</div>                
+                <div class="d-flex flex-column">
+                    <div class="muted my-1">아트부산 사무국｜ART BUSAN OFFICE</div>
+                    <div class="muted my-1">48214 부산광역시 수영구 구락로 104</div>
+                    <div class="muted my-1">104, Gurak-ro, Suyeong-gu, Busan, 48214 Korea</div>
+                    <div class="muted my-1">T. +82 51 757 3530 F. +82 51 757 3531</div>
+                    <div class="muted my-1">E. info@artbusankorea.com</div>
+                </div>
+            </div>
+            <div class="f-section col-md-6">
+                <div class="icons d-flex justify-content-end mb-3">
+                    <svg class="twitter" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-48.9 158.8c.2 2.8.2 5.7.2 8.5 0 86.7-66 186.6-186.6 186.6-37.2 0-71.7-10.8-100.7-29.4 5.3.6 10.4.8 15.8.8 30.7 0 58.9-10.4 81.4-28-28.8-.6-53-19.5-61.3-45.5 10.1 1.5 19.2 1.5 29.6-1.2-30-6.1-52.5-32.5-52.5-64.4v-.8c8.7 4.9 18.9 7.9 29.6 8.3a65.447 65.447 0 0 1-29.2-54.6c0-12.2 3.2-23.4 8.9-33.1 32.3 39.8 80.8 65.8 135.2 68.6-9.3-44.5 24-80.6 64-80.6 18.9 0 35.9 7.9 47.9 20.7 14.8-2.8 29-8.3 41.6-15.8-4.9 15.2-15.2 28-28.8 36.1 13.2-1.4 26-5.1 37.8-10.2-8.9 13.1-20.1 24.7-32.9 34z"/></svg>
+                    <svg class="facebook" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M448 56.7v398.5c0 13.7-11.1 24.7-24.7 24.7H309.1V306.5h58.2l8.7-67.6h-67v-43.2c0-19.6 5.4-32.9 33.5-32.9h35.8v-60.5c-6.2-.8-27.4-2.7-52.2-2.7-51.6 0-87 31.5-87 89.4v49.9h-58.4v67.6h58.4V480H24.7C11.1 480 0 468.9 0 455.3V56.7C0 43.1 11.1 32 24.7 32h398.5c13.7 0 24.8 11.1 24.8 24.7z"/></svg>
+                    <svg class="instagram" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>
+                </div>
+                <div class="links text-right mt-4 mb-2">
+                    <a href="#" class="ml-5">축제 참가</a>
+                    <a href="gallery.html" class="ml-5">갤러리</a>
+                    <a href="mypage.html" class="ml-5">마이페이지</a>
+                </div>
+            </div>
+            <div class="copyright text-center col-md-12">
+                <p>© Copyright ART BUSAN 2019</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Common -->
+    <script src="js/database.js"></script>
+    <script src="js/LoginSession.js"></script>
+</body>
+</html>

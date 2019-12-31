@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>부산국제아트페어</title>
+
+    <!-- Common -->
+    <link rel="stylesheet" href="css/common.css">
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Unique -->
+    <link rel="stylesheet" href="css/join.css">
+</head>
+<body>
+    <!-- 헤더 -->
+    <header>
+        <div class="inline d-flex justify-content-between align-items-center">
+            <a href="index.html">
+                <img class="logo" src="images/logo.png" alt="BUSAN INTERNATIONAL ART FAIR" height="70">
+            </a>
+            <ul class="main-nav d-flex">
+                <li class="mx-3">
+                    <a href="#">축제 참가</a>
+                    <ul class="sub-nav">
+                        <li>
+                            <a href="#">부스 예약</a>
+                        </li>
+                        <li>
+                            <a href="#">예약 현황</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="mx-3">
+                    <a href="gallery.html">갤러리</a>
+                </li>
+                <li class="mx-3">
+                    <a href="mypage.html">마이페이지</a>
+                    <ul class="sub-nav">
+                        <li><a href="mypage.html">내 정보</a></li>
+                        <li><a href="workspace.html">작업실</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="login-action main-nav d-flex">
+                <li>
+                    <a href="login.html">로그인</a>
+                </li>
+                <li>
+                    <a href="join.html">회원 가입</a>
+                </li>
+            </ul>
+        </div>
+    </header>
+ 
+    <div id="join" class="section">
+        <div class="inline">
+            <div class="section-title text-center">
+                <h5>회원가입</h5>
+                <h1>Sign Up</h1>
+            </div>
+            <form class="my-5" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="user_id" class="font-weight-bold">아이디</label>
+                    <input type="text" id="user_id" class="form-control" name="user_id" placeholder="[영어/한글/숫자] 10자 이하, 숫자로만 이뤄질 수 없음">
+                </div>
+                <div class="form-group">
+                    <label for="user_name" class="font-weight-bold">이름</label>
+                    <input type="text" id="user_name" class="form-control" name="user_name" placeholder="[한글] 10자 이하">
+                </div>
+                <div class="form-group">
+                    <label for="password" class="font-weight-bold">비밀번호</label>
+                    <input type="password" id="password" class="form-control" name="password" placeholder="[영어/숫자/특수문자] 모두 포함, 10자 이하, 4~10자">
+                </div>
+                <div class="form-group">
+                    <label for="image" class="font-weight-bold">프로필 사진</label>
+                    <small class="text-muted">10MB까지 업로드 할 수 있습니다.</small>
+                    <div class="custom-file">
+                        <input type="file" id="image" class="custom-file-input" name="image" accept="image/*">
+                        <label for="image" class="custom-file-label">이미지를 선택하세요….</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="comment" class="font-weight-bold">상태 메세지</label>
+                    <textarea name="comment" id="comment" cols="30" rows="10" class="form-control" placeholder="255자까지 입력하실 수 있습니다…." maxlength="255"></textarea>
+                </div>
+                <button type="submit" class="btn mt-2" disabled>확인</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let rules = {
+            user_id: [
+                id => /^[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]{1,10}$/.test(id),
+                id => !/^[0-9]+$/.test(id),
+            ],
+            user_name: [
+                name => /^[ㄱ-ㅎㅏ-ㅣ가-힣]{1,10}$/.test(name),
+            ],
+            password: [
+                pass => /^(?=.*[a-zA-Z]+)(?=.*[0-9]+)(?=.*[!@#$%^&*]+)([a-zA-Z0-9!@#$%^&*]{4,10})$/.test(pass)
+            ],
+            comment: [
+                comment => comment.length <= 255 && comment.length > 0
+            ]
+        };
+
+        let p_submit = false;
+        let s_btn = document.querySelector("form button");
+
+        document.createElem = innerHTML => {
+            let parent = document.createElement('div');
+            parent.innerHTML = innerHTML;
+            return parent.firstElementChild;
+        };
+
+        function check(target){
+            let result = rules[target.id].reduce((p, c) => p && c(target.value), true);
+            
+            error(target, result);
+
+            return result;
+        }
+        function error(target, result, message = "올바른 양식에 맞추어 입력하세요."){
+            let exist = target.nextElementSibling;
+            let error_form = document.createElem(`<div class="error-message text-danger mt-2">${message}</div>`);
+
+            if(result){
+                if(exist) exist.remove();
+                p_submit = true;
+                s_btn.disabled = "";
+            }
+            else {
+                if(!exist)
+                    target.parentElement.append(error_form);
+                p_submit = false;
+
+                s_btn.disabled = "disabled";
+            }
+        }
+
+        const user_id = document.querySelector("#user_id");
+        let id_timer;
+        user_id.addEventListener("keydown", function(){
+            if(id_timer){
+                clearTimeout(id_timer);
+            }
+            id_timer = setTimeout(() => {
+                check(this);
+            }, 500);
+        });
+
+        const user_name = document.querySelector("#user_name");
+        let name_timer;
+        user_name.addEventListener("keydown", function(){
+            if(name_timer){
+                clearTimeout(name_timer);
+            }
+            name_timer = setTimeout(() => {
+                check(this);
+            }, 500);
+        });
+
+        const password = document.querySelector("#password");
+        let pass_timer;
+        password.addEventListener("keydown", function(){
+            if(pass_timer){
+                clearTimeout(pass_timer);
+            }
+            pass_timer = setTimeout(() => {
+                check(this);
+            }, 500);
+        });
+
+        const comment = document.querySelector("#comment");
+        let comment_timer;
+        comment.addEventListener("keydown", function(){
+            if(comment_timer){
+                clearTimeout(comment_timer);
+            }
+            comment_timer = setTimeout(() => {
+                check(this);
+            }, 500);
+        });
+
+
+        const image = document.querySelector("#image");
+        const imageCheck = target => {
+            let file = target.files[0];
+
+            error(target.parentElement, file != undefined, "이미지를 선택해 주십시오.")
+            && error(target.parentElement, file.type.substr(0, 5) === "image", "이미지 파일만 업로드 할 수 있습니다.")
+            && error(target.parentElement, file.size <= 1024 * 1024 * 10, "10MB까지만 업로드 할 수 있습니다.");
+
+            if(file) target.nextElementSibling.innerText = file.name;
+        };
+        image.addEventListener("change", function(){
+            imageCheck(this);
+        });
+
+        document.querySelector("form").addEventListener("submit", function(e){
+            check(user_id);
+            check(user_name);
+            check(password);
+            check(comment);
+            imageCheck(image);
+        
+            if(!p_submit){
+                e.preventDefault();
+                return false;
+            }
+        });
+    </script>
+
+    <!-- 푸터 -->
+    <footer>
+
+        <div class="inline">
+            <div class="f-section col-md-6">
+                <div class="title">Contact Us</div>                
+                <div class="d-flex flex-column">
+                    <div class="muted my-1">아트부산 사무국｜ART BUSAN OFFICE</div>
+                    <div class="muted my-1">48214 부산광역시 수영구 구락로 104</div>
+                    <div class="muted my-1">104, Gurak-ro, Suyeong-gu, Busan, 48214 Korea</div>
+                    <div class="muted my-1">T. +82 51 757 3530 F. +82 51 757 3531</div>
+                    <div class="muted my-1">E. info@artbusankorea.com</div>
+                </div>
+            </div>
+            <div class="f-section col-md-6">
+                <div class="icons d-flex justify-content-end mb-3">
+                    <svg class="twitter" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-48.9 158.8c.2 2.8.2 5.7.2 8.5 0 86.7-66 186.6-186.6 186.6-37.2 0-71.7-10.8-100.7-29.4 5.3.6 10.4.8 15.8.8 30.7 0 58.9-10.4 81.4-28-28.8-.6-53-19.5-61.3-45.5 10.1 1.5 19.2 1.5 29.6-1.2-30-6.1-52.5-32.5-52.5-64.4v-.8c8.7 4.9 18.9 7.9 29.6 8.3a65.447 65.447 0 0 1-29.2-54.6c0-12.2 3.2-23.4 8.9-33.1 32.3 39.8 80.8 65.8 135.2 68.6-9.3-44.5 24-80.6 64-80.6 18.9 0 35.9 7.9 47.9 20.7 14.8-2.8 29-8.3 41.6-15.8-4.9 15.2-15.2 28-28.8 36.1 13.2-1.4 26-5.1 37.8-10.2-8.9 13.1-20.1 24.7-32.9 34z"/></svg>
+                    <svg class="facebook" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M448 56.7v398.5c0 13.7-11.1 24.7-24.7 24.7H309.1V306.5h58.2l8.7-67.6h-67v-43.2c0-19.6 5.4-32.9 33.5-32.9h35.8v-60.5c-6.2-.8-27.4-2.7-52.2-2.7-51.6 0-87 31.5-87 89.4v49.9h-58.4v67.6h58.4V480H24.7C11.1 480 0 468.9 0 455.3V56.7C0 43.1 11.1 32 24.7 32h398.5c13.7 0 24.8 11.1 24.8 24.7z"/></svg>
+                    <svg class="instagram" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>
+                </div>
+                <div class="links text-right mt-4 mb-2">
+                    <a href="#" class="ml-5">축제 참가</a>
+                    <a href="gallery.html" class="ml-5">갤러리</a>
+                    <a href="mypage.html" class="ml-5">마이페이지</a>
+                </div>
+            </div>
+            <div class="copyright text-center col-md-12">
+                <p>© Copyright ART BUSAN 2019</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Common -->
+    <script src="js/database.js"></script>
+    <script src="js/LoginSession.js"></script>
+</body>
+</html>

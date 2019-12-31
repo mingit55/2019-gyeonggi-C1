@@ -1,0 +1,115 @@
+@charset "UTF-8";
+
+/*
+ Aside
+*/
+
+aside {
+    position: fixed;
+    top: 80px;
+    left: 0;
+    width: 150px;       
+    height: calc(100% - 80px);
+    background-color: rgb(61, 58, 58);
+    z-index: 2;
+    box-shadow: 0 0 10px 8px #00000009;
+}
+
+aside hr {
+    background: rgb(49, 48, 48);
+    width: calc(100% - 10px);
+    margin: 20px 5px;
+}
+
+.tool {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    padding-left: 20px;
+    border-left: 0px solid rgb(223, 131, 154);
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+    transition: border-left 0.3s, padding-left 0.3s;
+}
+
+.tool:hover {
+    border-left: 8px solid rgb(223, 131, 154);
+    transition: border-left 0.1s, padding-left 0.1s;
+}
+
+.tool.active {
+    border-left: 8px solid rgb(230, 64, 105);
+    padding-left: 30px;
+}
+
+#options label { color: #fff; }
+
+#download {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#color-label {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: #f00;
+    cursor: pointer;
+}
+
+.picker-open {
+    background-color: #fff;
+    border: 5px;
+    overflow: hidden;
+}
+
+/* 
+ 그림을 그릴 수 있는 영역 :: Canvas
+*/
+
+#main-canvas {
+    z-index: 1;
+    margin: 50px auto 0;
+    width: 1140px;
+    height: 800px;
+    background-color: #fff;
+    box-shadow: 0 0 10px 8px #00000005;
+    border: 1px solid #ddd;
+}
+
+
+/*
+ 색 선택 영역 :: Color Picker
+*/
+#colorPicker {
+    width: 400px;
+    height: 300px;
+    position: fixed;
+    z-index: 100000;
+    left: 0;
+    top: 0;
+    background-color: #fff;
+    box-shadow: 0 0 10px 8px #00000010;
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+#colorPicker .main {
+    width: 300px;
+    height: 270px;
+    box-shadow: inset 0 0 5px 3px #00000020;
+    position: relative;
+    cursor: crosshair;
+}
+
+#colorPicker .sub, #colorPicker .opacity  {
+    width: 25px;
+    height: 270px;
+    position: relative;
+    box-shadow: inset 0 0 5px 3px #00000020;
+    cursor: crosshair;
+}

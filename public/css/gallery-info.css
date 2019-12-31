@@ -1,0 +1,85 @@
+@charset "UTF-8";
+
+
+.gal-info, .own-info {
+    padding: 15px 0;
+}
+
+.gal-info {
+    height: 150px;
+    border-bottom: 2px solid rgb(243, 239, 243);
+}
+
+.gal-info > span {
+    font-size: 25px;
+}
+
+.gal-info > p {
+    font-size: 16.4px;
+}
+
+.own-info {
+    border-bottom: 2px solid rgb(243, 239, 243);
+}
+
+.own-info span {
+    font-size: 18px;
+}
+
+.own-info p { margin-bottom: 5px; }
+
+.own-info .text-muted {
+    font-size: 1em;
+}
+
+.gallery .title {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.gallery .border-btn {
+    width: 150px;
+}
+
+
+.gallery .item {
+    width: 100%;
+    min-height: 200px;
+    padding: 25px 25px;
+    display: flex;
+    margin: 10px 0;
+    transition: transform 0.2s;
+    flex-wrap: wrap;
+}
+
+.gallery .item:hover {
+    text-decoration: none;;
+}
+
+.gallery .list:not(.no-hover) .item:hover {
+    transform: scale(1.03);
+    transition: transform 0.3s;
+    box-shadow: 0 0 10px 8px #00000010;
+}
+
+.gallery .image {
+    flex: 0 0 200px;
+    width: 200px;
+}
+
+.gallery .image img {
+    max-width: 500px;
+}
+
+.gallery .description {
+    width: calc(100% - 200px - 1.5rem);
+}
+
+.gallery .sub-item {
+    width: 100%;
+    border-left: 10px solid #ddd;
+}
+
+.gallery .sub-item p {
+    white-space: pre-line;
+}

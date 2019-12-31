@@ -1,0 +1,78 @@
+@charset "UTF-8";
+
+.art-list .title {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.art-list .list {
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 0 10px 5px #00000005;
+}
+
+.art-list .list thead tr {
+    border: 1px solid rgb(221, 221, 221);
+    background-color: rgb(247, 247, 247);
+    height: 40px;
+}
+
+.art-list .list tbody tr {
+    border-bottom: 1px solid #ddd;
+}
+
+.art-list .list tbody tr td {
+    height: 120px;
+    overflow: hidden;
+}
+
+.art-list th, .art-list td {
+    border: 1px solid #ddd;
+}
+
+/* Image */
+.art-list .list td.image {
+    width: 150px;
+}
+.art-list .list img {
+    max-width: 100px;
+    max-height: 100px;
+}
+
+
+/* input */
+.art-list input.price {
+    padding-left: 20px;
+    width: 150px;
+}
+.art-list .list tbody td.price {
+    position: relative;
+    width: 200px;
+}
+
+.art-list:first-child .list tbody td.price::before {
+    position: absolute;
+    left: 20px;
+    top: calc(50% + 2px);
+    transform: translateY(-50%);
+    content: '\\';
+    width: 30px;
+    height: 30px;
+}
+
+/* Button */
+.art-list .border-btn {
+    width: 150px;
+}
+
+
+/* selection */
+.art-list tbody td.checkbox {
+    width: 50px;
+}
+
+.art-list tbody .art-checkbox {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+}

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>부산국제아트페어</title>
+
+    <!-- Common -->
+    <link rel="stylesheet" href="css/common.css">
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Unique -->
+    <link rel="stylesheet" href="css/gallery-artwork-add.css">
+</head>
+<body>
+    <!-- 헤더 -->
+    <header>
+        <div class="inline d-flex justify-content-between align-items-center">
+            <a href="index.html">
+                <img class="logo" src="images/logo.png" alt="BUSAN INTERNATIONAL ART FAIR" height="70">
+            </a>
+            <ul class="main-nav d-flex">
+                <li class="mx-3">
+                    <a href="#">축제 참가</a>
+                    <ul class="sub-nav">
+                        <li>
+                            <a href="#">부스 예약</a>
+                        </li>
+                        <li>
+                            <a href="#">예약 현황</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="mx-3">
+                    <a href="gallery.html">갤러리</a>
+                </li>
+                <li class="mx-3">
+                    <a href="mypage.html">마이페이지</a>
+                    <ul class="sub-nav">
+                        <li><a href="mypage.html">내 정보</a></li>
+                        <li><a href="workspace.html">작업실</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="login-action main-nav d-flex">
+                <li>
+                    <a href="login.html">로그인</a>
+                </li>
+                <li>
+                    <a href="join.html">회원 가입</a>
+                </li>
+            </ul>
+        </div>
+    </header>
+
+    <div id="add-artwork" class="section">
+        <div class="inline">
+            <div id="select-art" class="art-list">
+                <span class="title">
+                    선택한 작품
+                </span>
+                <table class="list mt-4">
+                    <thead>
+                        <tr>
+                            <th>작품 이미지</th>
+                            <th>제목</th>
+                            <th>아티스트</th>
+                            <th>가격</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                <button id="append-btn" class="border-btn mt-4">추가하기</button>
+            </div>
+            <div id="artworks" class="art-list mt-5">
+                <span class="title">
+
+                    작품 목록
+                </span>
+                <table class="list mt-4">
+                    <thead>
+                        <tr>
+                            <th>
+                                <input type="checkbox" id="all-checkbox">
+                            </th>
+                            <th>작품 이미지</th>
+                            <th>제목</th>
+                            <th>아티스트</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>
+        window.addEventListener("load", () => {
+            const selectList = document.querySelector("#select-art tbody");
+            const commonList = document.querySelector("#artworks tbody");
+
+            const appendBtn = document.querySelector("#append-btn");
+
+
+
+            function rollback(message){
+                alert(message);
+                appendBtn.disabled = true;
+            }
+
+            function priceCheck(target, frame){
+                let price = parseInt(target.value);
+                if(price < 100000) return rollback("최소 가격은 100,000원 입니다.");
+                if(price % 100000 !== 0) return rollback("가격은 100,000원 단위로만 입력할 수 있습니다.");
+                appendBtn.disabled = false;
+                frame.price = price;
+            }
+
+
+            /*
+            B과제에서는 유저 아이디로 갤러리를 찾아왔지만, 
+            C과제에서는 갤러리 아이디가 주어질 예정임
+            */
+           // let gallery = database.gallery.find(x => x.owner === gallery_id);
+
+            let login_id = "khs620727";
+
+            let user_data = session.userList.find(x => x.user_id === login_id);
+            let gallery = database.gallery.find(x => x.owner === user_data.id);
+            
+            let artList = gallery.artist
+                                    .map(x => database.artworks.filter(y => y.artist_id == x).map(y => {
+                                        y.artist = session.userList.find(z => z.id === x);
+                                        return y;
+                                    }))
+                                    .reduce((p, c) => p.concat(c), [])
+                                    .filter(x => {
+                                        let find = database.gallery.find(gal => gal.item.includes(x.id));
+                                        return find === undefined;
+                                    }).map(x => {
+                                        let frame = {
+                                            price : 100000,
+                                            select: false,
+                                            data: x,
+                                            commonHTML: document.createTableElem(`<tr>
+                                                            <td class="checkbox">
+                                                                <input type="checkbox" class="art-checkbox">
+                                                            </td>
+                                                            <td class="image">
+                                                                <img src="images/articles/${x.img}" alt="artwork" height="100">
+                                                            </td>
+                                                            <td>
+                                                                ${x.title}
+                                                            </td>
+                                                            <td>
+                                                                ${x.artist.user_name}
+                                                            </td>
+                                                        </tr>`),
+                                            selectHTML: document.createTableElem(`<tr>
+                                                            <td class="image">
+                                                                <img src="images/articles/${x.img}" alt="artwork" height="100">
+                                                            </td>
+                                                            <td>
+                                                                ${x.title}
+                                                            </td>
+                                                            <td>
+                                                                ${x.artist.user_name}
+                                                            </td>
+                                                            <td class="price">
+                                                                <input type="number" class="price" step="100000" min="100000" value="100000">
+                                                            </td>
+                                                        </tr>`),
+                                        };
+
+                                        frame.commonHTML.querySelector(".art-checkbox").addEventListener("change", e => {
+                                            frame.select = e.target.checked;
+                                            view();
+                                        });
+
+                                        let p_input = frame.selectHTML.querySelector("input.price");
+
+                                        let input_timer;
+                                        p_input.addEventListener("keydown", e => {
+                                            if(input_timer){
+                                                clearTimeout(input_timer);
+                                            }
+                                            input_timer = setTimeout(() => {
+                                                priceCheck(e.target, frame);
+                                            }, 400);
+                                        });
+
+                                        return frame;
+                                    });
+            
+            // View
+            function view(){
+                commonList.innerHTML = "";
+
+                let no_select = artList.filter(x => !x.select);
+
+                no_select.forEach(x => {
+                    commonList.append(x.commonHTML);    
+                });
+                if(no_select.length === 0){
+                    commonList.innerHTML = `<tr><td colspan="4">추가할 수 있는 작품이 없습니다.</td></tr>`;    
+                }
+
+                let select = artList.filter(x => x.select);
+
+                selectList.innerHTML = "";
+                select.forEach(x => {
+                    selectList.append(x.selectHTML);
+                });
+                if(select.length === 0){
+                    selectList.innerHTML = `<tr><td colspan="4">선택할 수 있는 작품이 없습니다.</td></tr>`;    
+                    appendBtn.disabled = true;
+                }
+                else appendBtn.disabled = false;
+            }
+            view();
+
+
+            appendBtn.addEventListener("click", e => {
+                artList.filter(x => x.select).forEach(x => {
+                    let target = x.selectHTML.querySelector("input.price");
+                    priceCheck(target, x);
+                });
+
+                if(!e.target.disabled){
+                    // 작품 추가하는 로직 추가.. (C과제)
+                }
+            });
+        });
+    </script>
+
+    <!-- 푸터 -->
+    <footer>
+        <div class="inline">
+            <div class="f-section col-md-6">
+                <div class="title">Contact Us</div>                
+                <div class="d-flex flex-column">
+                    <div class="muted my-1">아트부산 사무국｜ART BUSAN OFFICE</div>
+                    <div class="muted my-1">48214 부산광역시 수영구 구락로 104</div>
+                    <div class="muted my-1">104, Gurak-ro, Suyeong-gu, Busan, 48214 Korea</div>
+                    <div class="muted my-1">T. +82 51 757 3530 F. +82 51 757 3531</div>
+                    <div class="muted my-1">E. info@artbusankorea.com</div>
+                </div>
+            </div>
+            <div class="f-section col-md-6">
+                <div class="icons d-flex justify-content-end mb-3">
+                    <svg class="twitter" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-48.9 158.8c.2 2.8.2 5.7.2 8.5 0 86.7-66 186.6-186.6 186.6-37.2 0-71.7-10.8-100.7-29.4 5.3.6 10.4.8 15.8.8 30.7 0 58.9-10.4 81.4-28-28.8-.6-53-19.5-61.3-45.5 10.1 1.5 19.2 1.5 29.6-1.2-30-6.1-52.5-32.5-52.5-64.4v-.8c8.7 4.9 18.9 7.9 29.6 8.3a65.447 65.447 0 0 1-29.2-54.6c0-12.2 3.2-23.4 8.9-33.1 32.3 39.8 80.8 65.8 135.2 68.6-9.3-44.5 24-80.6 64-80.6 18.9 0 35.9 7.9 47.9 20.7 14.8-2.8 29-8.3 41.6-15.8-4.9 15.2-15.2 28-28.8 36.1 13.2-1.4 26-5.1 37.8-10.2-8.9 13.1-20.1 24.7-32.9 34z"/></svg>
+                    <svg class="facebook" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M448 56.7v398.5c0 13.7-11.1 24.7-24.7 24.7H309.1V306.5h58.2l8.7-67.6h-67v-43.2c0-19.6 5.4-32.9 33.5-32.9h35.8v-60.5c-6.2-.8-27.4-2.7-52.2-2.7-51.6 0-87 31.5-87 89.4v49.9h-58.4v67.6h58.4V480H24.7C11.1 480 0 468.9 0 455.3V56.7C0 43.1 11.1 32 24.7 32h398.5c13.7 0 24.8 11.1 24.8 24.7z"/></svg>
+                    <svg class="instagram" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>
+                </div>
+                <div class="links text-right mt-4 mb-2">
+                    <a href="#" class="ml-5">축제 참가</a>
+                    <a href="gallery.html" class="ml-5">갤러리</a>
+                    <a href="mypage.html" class="ml-5">마이페이지</a>
+                </div>
+            </div>
+            <div class="copyright text-center col-md-12">
+                <p>© Copyright ART BUSAN 2019</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Common -->
+    <script src="js/database.js"></script>
+    <script src="js/LoginSession.js"></script>
+</body>
+</html>
