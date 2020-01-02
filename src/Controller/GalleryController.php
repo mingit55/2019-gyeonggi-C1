@@ -17,9 +17,7 @@ class GalleryController {
         if(!$gallery) return back("해당 갤러리는 존재하지 않는 갤러리 입니다.");
 
         $owner = DB::find("users", $gallery->owner_id);
-        $artworks = DB::fetchAll("SELECT A.* 
-                                  FROM artworks A, gallery_artworks G
-                                  WHERE G.aid = A.id AND G.gid = ?", [$gid]);
+        $artworks = DB::fetchAll("SELECT A.* , B.id exist FROM artworks A LEFT JOIN buy_history B ON A.id = B.aid, gallery_artworks G WHERE G.aid = A.id AND G.gid = ?", [$gid]);
 
         $data = [
             "gallery" => $gallery,
@@ -42,6 +40,36 @@ class GalleryController {
             "gallery" => $gallery,
         ];
         view("gallery-add-artwork", $data);
+    }
+
+    function artworkInfo(){
+        if(!$_GET['id']) return back("해당 페이지는 존재하지 않습니다.");
+
+        $id = $_GET['id'];
+        $artwork = DB::find("artworks", $id);
+        if(!$artwork) return back("해당 작품은 존재하지 않는 작품입니다.");
+
+        $artist = DB::find("users", $artwork->uid);
+
+        $isBought = DB::fetch("SELECT * FROM buy_history WHERE aid = ?", [$artwork->id]);
+
+        $data =[
+            "artwork" => $artwork,
+            "artist" => $artist,
+            "isBought" => $isBought,
+        ];
+        view("artwork-info", $data);
+    }
+
+    function buyArtwork(){
+        isEmpty();
+        extract($_POST);
+
+        $artwork = DB::find("artworks", $aid);
+        if(!$artwork) return back("해당 작품은 존재하지 않는 작품입니다.");
+
+        DB::query("INSERT INTO buy_history (aid, owner) VALUES (?, ?)", [$artwork->id, user()->id]);
+        go("/artworks/info?id={$artwork->id}", "구매가 완료되었습니다.");
     }
 
     // Execute

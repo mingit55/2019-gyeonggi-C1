@@ -37,6 +37,7 @@ class MainController {
             $data =[$gallery->id, $gallery->gallery_name, $gallery->description, $gallery->nation, $gallery->owner, $gallery->website_link, $gallery->address, $gallery->phone_number, $gallery->email];
             DB::query($sql, $data);
 
+            DB::query("INSERT INTO gallery_users(uid, gid) VALUES (?, ?)", [$gallery->owner, $gallery->id]);
             foreach($gallery->artist as $user_id){
                 DB::query("INSERT INTO gallery_users(uid, gid) VALUES (?, ?)", [$user_id, $gallery->id]);
             }
@@ -54,7 +55,7 @@ class MainController {
             $split = explode("x", $artwork->size);
             $width = trim($split[0]);
             $height = trim($split[1]);
-            $data = [$artwork->id, $artwork->img, $artwork->title, $artwork->description, $artwork->width, $artwork->height, $artwork->artist_id, $artwork->register_date, $artwork->price];
+            $data = [$artwork->id, $artwork->img, $artwork->title, $artwork->description, $width, $height, $artwork->artist_id, $artwork->register_date, $artwork->price];
             DB::query($sql, $data);
         }
 

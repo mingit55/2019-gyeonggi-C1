@@ -30,7 +30,7 @@
                 <?php foreach($artworks as $artwork):?>
                     <a href="/artworks/info?id=<?=$artwork->id?>" class="item">
                         <div class="image">
-                            <img src="/images/articles/<?=$artwork->image?>" alt="<?=$artwork->title?>" height="150">  
+                            <img src="/images/articles/<?=$artwork->image?>" alt="<?=$artwork->title?>" height="150" <?= $artwork->exist ? "style='filter: brightness(50%)'" : ""?>>   
                         </div>
                         <div class="description ml-4">
                             <h5 class="font-weight-bold mb-3"><?=$artwork->title?></h5>

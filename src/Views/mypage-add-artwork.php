@@ -5,7 +5,7 @@
 <div id="add-artwork" class="section">
     <div class="inline">
         <h3 class="font-weight-bold">새로운 작품 추가</h3>
-        <form class="mt-5" method="post">
+        <form class="mt-5" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="image">작품 이미지</label>
                 <small class="text-muted ml-2">10MB 이내의 jpg, jpeg, png 파일만 업로드할 수 있습니다.</small>

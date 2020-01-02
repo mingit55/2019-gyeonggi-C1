@@ -26,7 +26,7 @@ class MypageController {
     }
 
     function workspace(){
-        view("mypage-workspace");
+        view("mypage-workspace", [], true);
     }
     
     // Execute

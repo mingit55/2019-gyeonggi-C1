@@ -39,12 +39,12 @@ function back($message = ""){
     echo "</script>";   
 }
 
-function view($page, $data = []){
+function view($page, $data = [], $no_footer = false){
     extract($data);
     
     require VIEWS."/template/header.php";
     require VIEWS."/$page.php";
-    require VIEWS."/template/footer.php";
+    if(!$no_footer) require VIEWS."/template/footer.php";
 }
 
 function json_response($data){

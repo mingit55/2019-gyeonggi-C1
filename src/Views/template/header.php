@@ -24,10 +24,10 @@
                     <a href="#">축제 참가</a>
                     <ul class="sub-nav">
                         <li>
-                            <a href="/">부스 예약</a>
+                            <a href="/reservation/booth">부스 예약</a>
                         </li>
                         <li>
-                            <a href="/">예약 현황</a>
+                            <a href="/reservation/list">예약 현황</a>
                         </li>
                     </ul>
                 </li>
