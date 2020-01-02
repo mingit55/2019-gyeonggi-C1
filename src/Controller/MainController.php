@@ -50,8 +50,11 @@ class MainController {
         //Artworks
         DB::query("DELETE FROM artworks");
         foreach($json->artworks as $artwork){
-            $sql = "INSERT INTO artworks(id, image, title, description, size, uid, register_date, price) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-            $data = [$artwork->id, $artwork->img, $artwork->title, $artwork->description, $artwork->size, $artwork->artist_id, $artwork->register_date, $artwork->price];
+            $sql = "INSERT INTO artworks(id, image, title, description, width, height, uid, register_date, price) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $split = explode("x", $artwork->size);
+            $width = trim($split[0]);
+            $height = trim($split[1]);
+            $data = [$artwork->id, $artwork->img, $artwork->title, $artwork->description, $artwork->width, $artwork->height, $artwork->artist_id, $artwork->register_date, $artwork->price];
             DB::query($sql, $data);
         }
 

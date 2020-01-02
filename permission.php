@@ -18,9 +18,10 @@ function guestPermission(){
 }
 
 function presidentPermission(){
+    if(!isset($_GET['id'])) return false;
     return (object)[
-                "result" => president(),
-                "destination" => $_SERVER['REFERENCE'],
+                "result" => president($_GET['id']),
+                "destination" => "/gallery/info?id=".$_GET['id'],
                 "message" => "갤러리 대표만 이용 가능한 서비스 입니다.",
             ];   
 }

@@ -7,7 +7,8 @@ class Fill extends Tool {
         // data: 한 픽셀당 4개의 인덱스로 이뤄진 배열 (r, g, b, a)
         this.imageData = this.ctx.getImageData(0, 0, this.app.width, this.app.height);
 
-        this.changeColor = splitRGBA(this.canvas.fillStyle);
+        this.changeColor = splitRGBA(this.fillStyle);
+        this.changeColor[3] = this.changeColor[3] * 255;
     }
 
     mousedown(e){

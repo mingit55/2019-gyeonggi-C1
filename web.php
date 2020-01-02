@@ -23,8 +23,8 @@ Route::set("POST", "/users/exist", "UserController@isExist");
 Route::set("GET", "/gallery", "GalleryController@galleryHome");
 Route::set("GET", "/gallery/info", "GalleryController@galleryInfo");
 
-Route::set("GET", "/gallery/add-artwork", "GalleryController@addArtwork");
-Route::set("POST", "/gallery/add-artwork", "GalleryController@addArtworkExecute");
+Route::set("GET", "/gallery/add-artwork", "GalleryController@addArtwork", "president");
+Route::set("POST", "/gallery/add-artwork", "GalleryController@addArtworkExecute", "president");
 
 Route::set("POST", "/gallery/take-list", "GalleryController@takeList");
 Route::set("POST", "/gallery/popular-list", "GalleryController@popularList");
@@ -33,6 +33,9 @@ Route::set("POST", "/gallery/take-empty-artworks", "GalleryController@takeEmptyA
 
 // Mypage
 
-Route::set("GET", "/mypage", "MypageController@mypageHome");
+Route::set("GET", "/mypage", "MypageController@mypageHome", "user");
+Route::set("GET", "/mypage/add-artwork", "MypageController@addArtwork", "user");
+Route::set("POST", "/mypage/add-artwork", "MypageController@addArtworkExecute", "user");
+Route::set("GET", "/mypage/workspace", "MypageController@workspace", "user");
 
 Route::redirect();

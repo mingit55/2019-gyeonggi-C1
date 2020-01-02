@@ -1,3 +1,9 @@
+document.createElem = html => {
+    let parent = document.createElement("div");
+    parent.innerHTML = html;
+    return parent.firstChild;
+}
+
 Math.distance = function(a, b){
     return Math.sqrt(a * a + b * b);
 };
@@ -31,8 +37,13 @@ function prettyRGB(r, g, b, a = null){
 
 function splitRGBA(rgba){
     let regexp = /^rgba\(([0-9]{1,3}),\s([0-9]{1,3}),\s([0-9]{1,3}),\s([0-9]{1,3})\)$/g;
-    let arr = Array.from(regexp.exec(rgba));
-    arr.shift();
+    let exec = regexp.exec(rgba);
+    let arr = [
+        exec[1],
+        exec[2],
+        exec[3],
+        exec[4]
+    ];
     arr = arr.map(x => parseInt(x));
     return arr;
 }
