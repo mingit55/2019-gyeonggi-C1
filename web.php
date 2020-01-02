@@ -30,4 +30,9 @@ Route::set("POST", "/gallery/take-list", "GalleryController@takeList");
 Route::set("POST", "/gallery/popular-list", "GalleryController@popularList");
 Route::set("POST", "/gallery/take-empty-artworks", "GalleryController@takeEmptyArtworks");
 
+
+// Mypage
+
+Route::set("GET", "/mypage", "MypageController@mypageHome");
+
 Route::redirect();

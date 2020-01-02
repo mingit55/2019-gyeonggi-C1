@@ -48,7 +48,16 @@ class GalleryController {
 
     function addArtworkExecute(){
         if(isEmpty()) return back("데이터가 존재하지 않습니다.");
-        
+        extract($_POST);
+
+        $selectList = json_decode($selectList);
+
+        foreach($selectList as $item){
+            DB::query("INSERT INTO gallery_artworks(gid, aid) VALUES (?, ?)", [$gid, $item->data->aid]);
+            DB::query("UPDATE artworks SET price = ?", [$item->price]);
+        }
+
+        go("/gallery/info?id=$gid", "새롭게 작품이 추가되었습니다.");
     }
 
     // Process

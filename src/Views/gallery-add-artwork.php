@@ -1,7 +1,5 @@
 <!-- Unique -->
 <link rel="stylesheet" href="/css/gallery-artwork-add.css">
-
-<input type="hidden" id="gallery_id" value="<?=$gallery->id?>">
 <div id="add-artwork" class="section">
     <div class="inline">
         <div id="select-art" class="art-list">
@@ -21,11 +19,7 @@
 
                 </tbody>
             </table>
-            <form method="post">
-                <input type="hidden" id="select-list" name="select-list">
-                <input type="hidden" name="gid" value="<?=$gallery->id?>">
-                <button id="append-btn" class="border-btn mt-4">추가하기</button>
-            </form>
+            <button id="append-btn" class="border-btn mt-4">추가하기</button>
         </div>
         <div id="artworks" class="art-list mt-5">
             <span class="title">
@@ -49,6 +43,10 @@
         </div>
     </div>
 </div>
+<form id="add-form" method="post">
+    <input type="hidden" id="select-list" name="selectList">
+    <input type="hidden" id="gallery_id" name="gid" value="<?=$gallery->id?>">
+</form>
 <script>
     document.createTableElem = function(innerHTML){
         let parent = document.createElement("table");
@@ -61,7 +59,8 @@
         const commonList = document.querySelector("#artworks tbody");
 
         const appendBtn = document.querySelector("#append-btn");
-
+        const addForm = document.querySelector("#add-form");
+        const selectInput = document.querySelector("#select-list");
 
 
         function rollback(message){
@@ -177,10 +176,16 @@
 
 
             appendBtn.addEventListener("click", e => {
-                artList.filter(x => x.select).forEach(x => {
+                let selectList = artList.filter(x => x.select);
+                selectList.forEach(x => {
                     let target = x.selectHTML.querySelector("input.price");
                     priceCheck(target, x);
                 });
+
+                let json = JSON.stringify(selectList.map(x => ({price: x.price, data: x.data})));
+                selectInput.value = json;
+
+                addForm.submit();
             });
         }
     
