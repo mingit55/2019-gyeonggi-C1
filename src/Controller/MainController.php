@@ -66,33 +66,15 @@ class MainController {
             $data = [$history->id, $history->buy_date, $history->artwork_id, $history->owner];
             DB::query($sql, $data);
         }
-
-        //Booth
-        DB::query("DELETE FROM booth");
-        DB::query("DELETE FROM adjoin_room");
-        foreach($json->booth as $booth){
-            $sql = "INSERT INTO booth(id, name, price, width, height) VALUES (?, ?, ?, ?, ?)";
-
-            $sizeArr = explode("x", $booth->size);
-            $width = trim($sizeArr[0]);
-            $height = trim($sizeArr[1]);
-
-            $data = [$booth->id, $booth->booth, $booth->price, $width, $height];
-
-            DB::query($sql, $data);
-
-            // adjoin_room :: 근접 방 저장
-            foreach($booth->adjoining_room as $around_id){
-                DB::query("INSERT INTO adjoin_room(booth_id, around_id) VALUES (?, ?)", [$booth->id, $around_id]);
-            }
-        }
-
+        
         // Reservation
         DB::query("DELETE FROM reservation");
         DB::query("DELETE FROM reservation_booth");
         foreach($json->reservation as $res){
-            $sql = "INSERT INTO reservation(id, gid, start_date, end_date) VALUES (?, ?, ?)";
+            $sql = "INSERT INTO reservation(id, gid, start_date, end_date) VALUES (?, ?, ?, ?)";
             $data = [$res->id, $res->gallery_id, $res->start_date, $res->end_date];
+
+            DB::query($sql, $data);
 
             // 해당 예약에서 빌린 부스 저장
             foreach($res->booth as $booth_id){

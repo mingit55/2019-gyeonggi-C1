@@ -21,7 +21,7 @@
             </a>
             <ul class="main-nav d-flex">
                 <li class="mx-3">
-                    <a href="#">축제 참가</a>
+                    <a href="/reservation/booth">축제 참가</a>
                     <ul class="sub-nav">
                         <li>
                             <a href="/reservation/booth">부스 예약</a>
