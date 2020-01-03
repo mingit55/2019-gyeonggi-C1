@@ -45,7 +45,11 @@ Route::set("GET", "/mypage/workspace", "MypageController@workspace", "user");
 // Reservation
 
 Route::set("GET", "/reservation/booth", "ReserveController@reserveBooth", "user");
+Route::set("POST", "/reservation/booth", "ReserveController@reserveBoothExecute", "user");
+
+
 Route::set("GET", "/reservation/list", "ReserveController@reserveList");
 
-Route::set("POST", "/reservation/take-list", "ReserveController@takeReservedList");
+Route::set("POST", "/take/reserve-list", "ReserveController@takeReservedList");
+Route::set("POST", "/take/booth-list", "ReserveController@takeBoothList");
 Route::redirect();

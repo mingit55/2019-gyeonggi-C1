@@ -23,7 +23,7 @@
                 <span class="font-weight-bold">이전에 로그인한 계정으로 재로그인</span>
                 <form action="/users/login/prev" method="post" class="d-flex align-items-center mt-4">
                     <div class="image">
-                        <img src="/images/users/<?=prevLoginData()->image?>" alt="Profile-image" height="100">
+                        <img src="/images/users/<?=prevLoginData()->image?>" alt="Profile-image" height="100" width="100">
                     </div>
                     <div class="info ml-4 d-flex flex-column justify-content-center">
                         <div class="form-group">

@@ -69,16 +69,13 @@ class MainController {
         
         // Reservation
         DB::query("DELETE FROM reservation");
-        DB::query("DELETE FROM reservation_booth");
         foreach($json->reservation as $res){
-            $sql = "INSERT INTO reservation(id, gid, start_date, end_date) VALUES (?, ?, ?, ?)";
-            $data = [$res->id, $res->gallery_id, $res->start_date, $res->end_date];
-
-            DB::query($sql, $data);
-
-            // 해당 예약에서 빌린 부스 저장
             foreach($res->booth as $booth_id){
-                if($booth_id) DB::query("INSERT INTO reservation_booth(bid, rid) VALUES (?, ?)", [$booth_id, $res->id]);
+                if($booth_id){
+                    $sql = "INSERT INTO reservation(gallery_id, booth_id, start_date, end_date) VALUES (?, ?, ?, ?)";
+                    $data = [$res->gallery_id, $booth_id, $res->start_date, $res->end_date];
+                    DB::query($sql, $data);
+                }
             }
         }
 

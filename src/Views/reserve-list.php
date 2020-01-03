@@ -1,29 +1,13 @@
 <link rel="stylesheet" href="/css/reserve.css">
+
 <div id="reserve">
-    <aside id="search-side" class="px-3">
-        <div class="form-group">
-            <label for="start_date">
-                대여 시작일
-            </label>
-            <input type="date" name="start_date" id="start_date" class="form-control" min="2019-12-05" max="2019-12-09" value="2019-12-05">
+    <aside id="search-side">
+        <div class="form-group px-3">
+            <label for="select_date">일자 선택</label>
+            <input type="date" name="select_date" id="select_date" class="form-control" min="2019-12-05" max="2019-12-09" value="2019-12-05">
         </div>
-        <div class="form-group">
-            <label for="end_date">
-                대여 종료일
-            </label>
-            <input type="date" name="end_date" id="end_date" class="form-control" min="2019-12-05" max="2019-12-09" value="2019-12-09">
+        <div class="reserve-list px-2">
         </div>
-        <div class="form-group">
-            <label for="size">사용할 총 면적</label>
-            <div class="view-unit">
-                <input type="number" name="size" id="size" name="size" class="form-control" min="1" value="1">
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="chaining">연속 부스 유무</label>
-            <input type="checkbox" id="chaining" class="ml-2" name="chaining">
-        </div>
-        <button id="search-btn" class="border-btn">검색</button>
     </aside>
     <div id="booth-data" class="mt-5">
         <svg width="800" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 2834.65 2834.65" style="enable-background:new 0 0 2834.65 2834.65;" xml:space="preserve">
@@ -535,52 +519,71 @@
             </g>
         </svg>
     </div>
-    <aside id="view-side">
-    </aside>
 </div>
 
-<form id="reserve-form" method="post">
-    <input type="hidden" id="reserve_start" name="reserve_start">
-    <input type="hidden" id="reserve_end" name="reserve_end">
-    <input type="hidden" id="booth_id" name="booth_id">
-</form>
-
 <script>
-    window.addEventListener("load", e => {
+    Date.prototype.summary = function(){
+        return `${this.getDate()}일`;
+    };
+
+    window.addEventListener("load", () => {
         class App {
+            static color = {
+                impossible: "#e6e6e6",
+                possible: "#7c7979",
+                reserved: "#df5252",
+                active: "#645ccf"
+            } 
+
             constructor(){
-                // 검색창 내용물
-                this.startInput = document.querySelector("#start_date");
-                this.endInput = document.querySelector("#end_date");
-                this.sizeInput = document.querySelector("#size");
-                this.chainCheck = document.querySelector("#chaining");
-                this.search_btn = document.querySelector("#search-btn");
+                this.dateInput = document.querySelector("#select_date");
+
                 this.boothList = [];
                 this.reserveList = [];
-
                 this.loadData().then(() => {
                     this.eventTrigger();
                     this.update();
                 });
             }
+            get selectDate(){
+                return new Date(this.dateInput.value);
+            }
 
-            get search_start(){
-                return this.startInput.value;
+            update(){
+                const reserve_wrap =  document.querySelector(".reserve-list");
+                reserve_wrap.innerHTML = "";
+                
+                let viewList = this.reserveList.filter(x => {
+                    x.booth.rect.style.fill = App.color.possible;
+                    return x.start_date <= this.selectDate && this.selectDate <= x.end_date;
+                })
+                viewList.forEach(x => {
+                    x.booth.rect.style.fill = App.color.reserved;
+                    reserve_wrap.append(x.listHTML);
+                });
             }
-            get search_end(){
-                return this.endInput.value;
+            
+            eventTrigger(){
+                this.dateInput.addEventListener("change", e => {
+                    this.update();
+                });
             }
-            get size_chain(){
-                return this.chainCheck.checked;
-            }
-            get size(){
-                return this.sizeInput.value;
+
+            selectGallery(data){
+                let exist = document.querySelector(".view-gallery")
+                exist && exist.remove();
+                document.body.append(data.galleryHTML);
+                setTimeout(() => {
+                    data.galleryHTML.style.right = "0";
+                }, 50);
+                    
+                
             }
 
             async loadData(){
                 this.boothList = await this.loadBoothList();
                 this.reserveList = await this.loadReserveList();
-            }
+            };
 
             loadBoothList(){
                 return new Promise(res => {
@@ -590,27 +593,7 @@
                     xhr.onload = () => {
                         let response = JSON.parse(xhr.responseText);
                         let data = response.map(x => {
-                            x.listItem = this.listTemplate(x);
                             x.rect = document.querySelector(`rect[data-name="${x.booth}"]`);
-                            x.chainSize = () => {
-                                let adjoin_size = x.adjoining_room.map(room_id => this.boothList.find(f => f.id == room_id).size).reduce((p, c) => p + c);                                
-                                return x.size + adjoin_size;
-                            };
-
-                            x.listItem.querySelector("button").addEventListener("click", () => {
-                                if(!confirm(`${x.booth} 부스를 예약하시겠습니까?`)) return false;
-                                document.querySelector("#booth_id").value = x.id;
-                                document.querySelector("#reserve_start").value = this.search_start;
-                                document.querySelector("#reserve_end").value = this.search_end;
-                                document.querySelector("#reserve-form").submit();
-                            });
-                            $(x.listItem).hover(e => {
-                                x.listItem.classList.add("active");
-                                x.rect.classList.add("active");
-                            }, e => {
-                                x.listItem.classList.remove("active");
-                                x.rect.classList.remove("active");
-                            });
                             return x;
                         });
                         res(data);
@@ -623,112 +606,50 @@
                     let xhr = new XMLHttpRequest();
                     xhr.open("POST", "/take/reserve-list");
                     xhr.send();
-                    xhr.onload = () => res(JSON.parse(xhr.responseText).reservation);
-                });
-            }
-
-            eventTrigger(){
-                const valid_date = (value) => new Date(this.startInput.min) <= new Date(value) && new Date(value) <= new Date(this.endInput.max);
-
-                this.startInput.addEventListener("change", e => {
-                    if(valid_date(e.target.value)) this.endInput.min = e.target.value; 
-                    else {
-                        e.target.value = "2019-12-05";
-                        alert(`대여 시작일은 '2019-12-05' 부터 '${this.endInput.max}'까지만 입력할 수 있습니다.`);
+                    xhr.onload = () => {
+                        let response = JSON.parse(xhr.responseText).reservation;
+                        let data = response.map(x => {
+                            x.booth = this.boothList.find(booth => booth.id == x.booth_id);
+                            x.start_date = new Date(x.start_date);
+                            x.end_date = new Date(x.end_date);
+                            x.galleryHTML = this.galleryTemplate(x.gallery);
+                            x.listHTML = this.listTemplate(x);
+                            x.listHTML.querySelector("button").addEventListener("click", () => this.selectGallery(x));
+                            return x;
+                        });
+                        res(data);
                     }
-                });
-
-                this.endInput.addEventListener("change", e => {
-                    if(valid_date(e.target.value)) this.startInput.max = e.target.value;
-                    else {
-                        e.target.value = "2019-12-09";
-                        alert(`대여 시작일은 '${this.startInput.min}' 부터 '2019-12-05'까지만 입력할 수 있습니다.`);
-                    }
-                });
-
-
-                const sizeTrigger = () => {
-                    this.sizeInput.value = parseInt(this.sizeInput.value);
-                };
-                this.sizeInput.addEventListener("keypress", sizeTrigger);
-                this.sizeInput.addEventListener("keyup", sizeTrigger);
-
-                this.search_btn.addEventListener("click", e => {
-                    if(!this.startInput.value || !this.endInput.value || ! this.sizeInput.value) {
-                        alert("검색 사항을 모두 입력해 주십시오.");
-                        e.preventDefault();
-                        return false;
-                    }
-                    this.update();
-                });
-            }
-
-            static color = {
-                impossible: "#e6e6e6",
-                possible: "#7c7979",
-                reserved: "#df5252",
-                active: "#645ccf"
-            } 
-
-            update(){
-                const viewBox = document.querySelector("#view-side");
-                viewBox.innerHTML = "";
-
-                // 기본적으로 옅은 색을 뿌려준다 : #e6e6e6
-                // 선택이 가능하다면 진한 색을 뿌린다 : #7c7979
-                // 이미 해당 기간에 예약되어 있다면 강조 색을 뿌린다 : #df5252
-
-                const date_contains = item => new Date(this.search_start) <= new Date(item) && new Date(item) <= new Date(this.search_end);
-
-                let no_reserved = this.boothList.filter(booth => {
-                    booth.rect.style.fill = App.color.impossible;
-
-                    // 해당 부스의 예약이면서 검색 조건 내에 일치하는 예약인지 찾는다.
-                    let reserved = this.reserveList.some(res => res.booth_id == booth.id && date_contains(res.start_date) && date_contains(res.end_date));
-                    let size = !this.sizeInput_chain ? this.size <= booth.size : this.size <= booth.chainSize();
-
-                    if(size) {
-                        if(reserved) booth.rect.style.fill = App.color.reserved;
-                        else booth.rect.style.fill = App.color.possible;
-                    }
-                    return !reserved && size;
-                }).slice(0, 20);
-
-                // 검색 결과와 일치하지 않는 경우 + 10m^2 의 오차까지 검색
-                if(no_reserved.length === 0) {
-                    no_reserved = this.boothList.filter(booth => {
-                        booth.rect.style.fill = App.color.impossible;
-
-                        // 해당 부스의 예약이면서 검색 조건 내에 일치하는 예약인지 찾는다.
-                        let reserved = this.reserveList.some(res => res.booth_id == booth.id && date_contains(res.start_date) && date_contains(res.end_date));
-                        let size = !this.sizeInput_chain ? this.size <= booth.size + 10 : this.size <= booth.chainSize() + 10;
-
-                        if(size) {
-                            if(reserved) booth.rect.style.fill = App.color.reserved;
-                            else booth.rect.style.fill = App.color.possible;
-                        }
-                        return !reserved && size;
-                    }).sort((a, b) => a.size - b.size).slice(0, 10);
-                }
-
-                no_reserved.forEach(booth => {
-                    viewBox.append(booth.listItem);
                 });
             }
 
             listTemplate(data){
+                let booth = this.boothList.find(x => x.id == data.booth_id).booth;
+
                 let item = document.createElement("div");
-                item.classList.add("view-item");
-                item.innerHTML = `<div class="info d-flex justify-content-between">
-                                        <b>${data.booth}</b>
-                                        <span>${data.size}㎡</span>
-                                        <span>${parseInt(data.price).toLocaleString() }원</span>
-                                    </div> 
-                                    <button class="btn">예약하기</button>`;
+                item.classList.add("item");
+                item.innerHTML = `<div class="info">
+                                    <b>${booth}</b>
+                                    <span class="ml-2">${data.gallery.name}</span>
+                                    <small class="ml-2 text-muted">${data.start_date.summary()} ~ ${data.end_date.summary()}</small>
+                                </div>
+                                <button class="btn">자세히 보기</button>`;
                 return item;
             }
+
+            galleryTemplate(data){
+                let item = document.createElement("div");
+                item.classList.add("view-gallery");
+                item.innerHTML = `<h5 class="font-weight-bold">${data.name}</h5>
+                                    <small class="text-muted">${data.owner_name}</small>
+                                    <small class="text-muted">${data.country}</small>
+                                    <p class="mt-2">${data.description}</p>
+                                    <a href="/gallery/info?id=${data.id}" class="border-btn">자세히 보기</a>`;
+                return item;
+            }
+
         }
 
         const app = new App();
     });
+    
 </script>

@@ -32,7 +32,7 @@ class MypageController {
     // Execute
 
     function addArtworkExecute(){
-        isEmpty();
+        if(isEmpty()) return back("내용을 모두 입력하세요.");
         extract($_POST);
         
         if(!isset($_FILES['image'])) return back("이미지를 업로드해 주세요!");
